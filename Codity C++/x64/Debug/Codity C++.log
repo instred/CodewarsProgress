@@ -1,6 +1,0 @@
-﻿  Trwa skanowanie źródeł pod kątem zależności modułów...
-  Main.cpp
-C:\Users\jakub\source\repos\Codity C++\Main.cpp(123,26): warning C4244: "*=": konwersja z "double" do "int", możliwa utrata danych
-C:\Users\jakub\source\repos\Codity C++\Main.cpp(27): warning C4715: "findOdd”: niewszystkie ścieżki kodu zwracają wartość
-C:\Users\jakub\source\repos\Codity C++\Main.cpp(158): warning C4715: "greed”: niewszystkie ścieżki kodu zwracają wartość
-  Codity C++.vcxproj -> C:\Users\jakub\source\repos\Codity C++\x64\Debug\Codity C++.exe

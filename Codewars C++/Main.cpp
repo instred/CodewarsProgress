@@ -496,3 +496,30 @@ vector<int> snail(const vector<vector<int>> &snail_map) {
 	}
 	return ans;
 }
+
+
+/*For this task you're only supposed to substitute characters. Not spaces, punctuation, numbers, etc.
+Test examples:
+"EBG13 rknzcyr." -> "ROT13 example."
+"This is my first ROT13 excercise!" -> "Guvf vf zl svefg EBG13 rkprepvfr!"*/
+
+string rot13(const string& str) {
+	string ans = "";
+	for (int i = 0; i<str.length();i++){
+		if(isalpha(str[i])){
+			if(isupper(str[i])){
+				ans += str[i] + 13 > 'Z' ? 'A' + (str[i] + 12)  % 'Z' : str[i] + 13;
+			}
+			else{
+				ans += str[i] + 13 > 'z' ? 'a' + (str[i] + 12)  % 'z' : str[i] + 13;
+			}
+			
+		}
+		else{
+			ans += str[i];
+		}
+	}
+  	return ans;
+}
+
+

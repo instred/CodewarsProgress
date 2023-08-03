@@ -1,4 +1,169 @@
 import math
+import string 
+from collections import Counter
+import re
+from dataclasses import dataclass, field
+import numpy as np
+
+
+
+
+
+#height of binary tree
+
+    #          5
+    #       /     \
+    #      3       10
+    #     / \     /       
+    #   20  21   1     
+
+@dataclass
+class Tree:
+    x: int = 0
+    l: "Tree" = None
+    r: "Tree" = None
+
+def solution(T):
+    if T is None:
+        return 0
+    
+    if T.l is not None:
+        ld = solution(T.l)
+
+    if T.r is not None:
+        rd = solution(T.r)
+    maxx = ld if ld > rd else rd
+    return maxx+1
+
+
+# that, given a string S, returns the index (counting from 0) of a character such that the part of the string
+# to the left of that character is a reversal of the part of the string to its right. 
+# The function should return −1 if no such index exists.
+
+
+def s3(S):
+    if len(S) % 2 == 0:
+        return -1
+    if len(S) == 1:
+        return 0
+    mid = len(S) // 2
+    r = S[mid+1:len(S)]
+    if S[0:mid] == r[::-1]:
+        return mid
+    return -1
+
+
+# Write a function:
+# that, given a non-empty array A of N integers, returns the first unique number in A. 
+# The function should return −1 if there are no unique numbers in A.
+
+
+def s2(A):
+    dictt = {}
+    for x in A:
+        if x not in dictt:
+            dictt[x] = 1
+        else:
+            dictt[x] += 1
+    for x in dictt:
+        if dictt[x] == 1:
+            return x
+    return -1
+
+#smallest number that is not in list
+
+def s(A):
+    dict = {}
+    for x in A:
+        if x > 0:
+            if x not in dict:
+                dict[x] = 1
+            else:
+                dict[x] += 1
+
+    for i in range(1,1000000):
+        if i not in dict:
+            return i
+    
+
+# Here's the deal:
+# It must start with a hashtag (#).
+# All words must have their first letter capitalized.
+# If the final result is longer than 140 chars it must return false.
+# If the input or the result is an empty string it must return false.
+
+def generate_hashtag(s):
+    ans =  '#'+''.join(s.title().split())
+    if len(ans) > 140 or ans == '#':
+        return False
+    return ans
+
+# Write a function that, given a string of text (possibly with punctuation and line-breaks), 
+# returns an array of the top-3 most occurring words, in descending order of the number of occurrences.
+
+def top_3_words(text):
+    words = re.findall(r"[a-z']*[a-z]+[a-z']*", text.lower())
+    top_3 = Counter(words).most_common(3)
+    return [tup[0] for tup in top_3]
+
+
+# Write two functions that convert a roman numeral to and from an integer value. 
+# Multiple roman numeral values will be tested for each function.
+
+def val(s):
+    match s:
+        case 'I':
+            return 1
+        case 'V':
+            return 5
+        case 'X':
+            return 10
+        case 'L':
+            return 50
+        case 'C':
+            return 100
+        case 'D':
+            return 500
+        case 'M':
+            return 1000
+
+class RomanNumerals:
+    @staticmethod
+    def to_roman(val):
+        ans = ""
+        letter_val = {1000:'M', 900:'CM', 500:'D', 400:'CD', 100:'C', 90:'XC', 50:'L', 
+                      40:'XL', 10:'X', 9:'IX', 5:'V', 4:'IV'}
+        while(val >= 4):
+            for l in letter_val:
+                if val // l >= 1 :
+                    ans += (val // l) * letter_val[l]
+                    val %= l
+        return ans+val*'I'
+
+
+
+    @staticmethod
+    def from_roman(roman_num):
+        ans = 0
+        i = 0 
+        while i < len(roman_num):
+            if i == len(roman_num) - 1:
+                return ans + val(roman_num[i])
+            if val(roman_num[i]) < val(roman_num[i+1]):
+                ans += val(roman_num[i+1]) - val(roman_num[i])
+                i += 2
+                continue
+            ans += val(roman_num[i])
+            i += 1
+        return ans
+
+
+# Write a method (or function, depending on the language) that converts a string to camelCase, 
+# that is, all words must have their first letter capitalized and spaces must be removed.
+
+def camel_case(s):
+    ans= s.title().replace(" ", "")
+    return ans
 
 
 # Write a program that will calculate the number of trailing zeros in a factorial of a given number.
@@ -17,8 +182,6 @@ def zeros(n):
     for i in range(1, int(kmax)+1):
         sum += math.floor(n/(5**i))
     return sum
-
-print(zeros(30))
 
 # Write a simple parser that will parse and run Deadfish.
 # Deadfish has 4 commands, each 1 character long:

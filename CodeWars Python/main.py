@@ -2,17 +2,91 @@ import math
 import string 
 from collections import Counter
 import re
-from dataclasses import dataclass, field
-import numpy as np
+from dataclasses import dataclass
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
 
 
+#1
+
+def check(ans, val):
+    for x in ans:
+        if int(x[1:6]) == val:
+            return True
+    return False
+
+def s5(A):
+    tmp = []
+    ans = []
+    for x in A:
+        d = {}
+        tmp = x.split(';')
+        name = tmp[1].split()
+        if not check(ans, int(tmp[0])):
+            f_name = name[0].capitalize()
+            l_name = name[1].capitalize()
+            d[int(tmp[0])] = {'first_name':f_name, 'last_name':l_name, 'salary':float(tmp[2])}
+            ans.append(str(d))
+    return ans
+
+#2
+data_path = 'jobs.csv'
+
+class SparkTask:
+    def __init__(self, spark_session):
+        self.job_counts_dict = None
+        self.sc = spark_session.sparkContext
+        self.spark = spark_session
+
+    def group_sort(self, input_path):
+        spark = SparkSession.builder.appName("job counter").getOrCreate()
+        df = spark.read.csv(input_path, header=True, inferSchema=True)
+        job_counts = df.groupBy("job").count()
+        sorted_job_counts = job_counts.orderBy(col("count").desc(), col("job"))
+        sorted_job_counts_list = sorted_job_counts.collect()
+        job_count_dict = {row["job"]: row["count"] for row in sorted_job_counts_list}
+        spark.stop()
+
+        return job_count_dict
 
 
+def group_csv_to_dict(input_file):
+    sess = SparkSession.builder.appName("job counter").getOrCreate()
+    reader = sess.read.csv(input_file, header=True, inferSchema=True)
+    counter = reader.groupBy("job").count()
+    sorted_counter = counter.orderBy(col("count").desc(), col("job"))
+    sorted_list = sorted_counter.collect()
+    job_count_dict = {row["job"]: row["count"] for row in sorted_list}
+    sess.stop()
+
+    return job_count_dict
+    
+
+
+result_dict = group_csv_to_dict(data_path)
+for key, value in result_dict.items():
+    print(key, value)
+
+#3
+
+def solution(S):
+    ans = 1
+    split = ""
+    i = 0
+    for i in range(len(S)):
+        if S[i] not in split:
+            split += S[i]
+        elif i != len(S)-1 and S[i] == S[i+1]:
+            ans+=1
+        else:
+            split = ""
+            ans += 1
+    return ans
 
 #height of binary tree
 
     #          5
-    #       /     \
+    #       /     \d
     #      3       10
     #     / \     /       
     #   20  21   1     
@@ -23,15 +97,15 @@ class Tree:
     l: "Tree" = None
     r: "Tree" = None
 
-def solution(T):
+def s4(T):
     if T is None:
         return 0
     
     if T.l is not None:
-        ld = solution(T.l)
+        ld = s4(T.l)
 
     if T.r is not None:
-        rd = solution(T.r)
+        rd = s4(T.r)
     maxx = ld if ld > rd else rd
     return maxx+1
 

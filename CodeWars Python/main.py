@@ -3,6 +3,92 @@ import string
 from collections import Counter
 import re
 from dataclasses import dataclass
+from typing import List, Tuple
+
+
+
+
+# Build Tower by the following given arguments:
+#     number of floors (integer and always greater than 0)
+#     block size (width, height) (integer pair and always greater than (0, 0))
+
+
+def tower_builder(n_floors : int, block_size : Tuple[int, int]) -> List[str]:
+    tower = []
+    stars = block_size[0]
+    for i in range(n_floors-1, -1, -1):
+        for j in range(block_size[1]):
+            tower.append(f'{(i*block_size[0]) * " "}{stars * "*"}{(i*block_size[0]) * " "}')
+        stars += block_size[0]*2
+    return tower
+
+print(*tower_builder(3, (2,3)), sep="\n")
+
+# Write a function that will return the count of distinct case-insensitive alphabetic characters
+# and numeric digits that occur more than once in the input string. The input string can be assumed to 
+# contain only alphabets (both uppercase and lowercase) and numeric digits.
+
+
+def duplicate_count(text : str) -> int:
+    d_count = {}
+    for chr in text.lower():
+        if chr in d_count:  
+            if d_count[chr] == 0:
+                d_count[chr] += 1
+        else:
+            d_count[chr] = 0
+    return sum(d_count.values())
+
+
+# find list outlier
+
+def find_outlier(integers : List[int]) -> int:
+    # i = 0
+    # while i < len(integers):
+    #     if (integers[i] + integers[i+1]) % 2 != 0:
+    #         return integers[i] if (integers[0] + integers[2]) % 2 != 0 else integers[i+1]
+    #     i += 1
+
+    odds = [x for x in integers if x % 2 != 0]
+    even = [x for x in integers if x % 2 == 0]
+    return odds[0] if len(odds) < len(even) else even[0]
+
+
+
+# create phone number
+
+def create_phone_number(n : List[int]) -> str:
+    # return f'({"".join(map(str, n[:3]))}) {"".join(map(str, n[3:6]))}-{"".join(map(str, n[6:10]))}'
+    return "({}{}{}) {}{}{}-{}{}{}{}".format(*n)
+
+
+
+# array diff
+
+def array_diff(a : List[int], b : List[int]) -> List[int]:
+    for num in b:
+        a = [i for i in a if i != num]
+        # a = list(filter((num).__ne__, a))
+    return a
+    # return [num for num in a if num not in b]
+
+
+
+# return likes count
+
+def likes(names : List[str]) -> str:
+
+    match(names):
+        case []:
+            return "no one likes this"
+        case [a]:
+            return f"{a} likes this"
+        case [a, b]:
+            return f"{a} and {b} like this"
+        case [a, b, c]:
+            return f"{a}, {b} and {c} like this"
+        case [a, b, *rest]:
+            return f"{a}, {b} and {len(rest)} like this"
 
 
 # return digital root of a number

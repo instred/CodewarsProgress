@@ -3,85 +3,133 @@ import string
 from collections import Counter
 import re
 from dataclasses import dataclass
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import col
+from typing import List, Tuple
 
 
-#1
-
-def check(ans, val):
-    for x in ans:
-        if int(x[1:6]) == val:
-            return True
-    return False
-
-def s5(A):
-    tmp = []
-    ans = []
-    for x in A:
-        d = {}
-        tmp = x.split(';')
-        name = tmp[1].split()
-        if not check(ans, int(tmp[0])):
-            f_name = name[0].capitalize()
-            l_name = name[1].capitalize()
-            d[int(tmp[0])] = {'first_name':f_name, 'last_name':l_name, 'salary':float(tmp[2])}
-            ans.append(str(d))
-    return ans
-
-#2
-data_path = 'jobs.csv'
-
-class SparkTask:
-    def __init__(self, spark_session):
-        self.job_counts_dict = None
-        self.sc = spark_session.sparkContext
-        self.spark = spark_session
-
-    def group_sort(self, input_path):
-        spark = SparkSession.builder.appName("job counter").getOrCreate()
-        df = spark.read.csv(input_path, header=True, inferSchema=True)
-        job_counts = df.groupBy("job").count()
-        sorted_job_counts = job_counts.orderBy(col("count").desc(), col("job"))
-        sorted_job_counts_list = sorted_job_counts.collect()
-        job_count_dict = {row["job"]: row["count"] for row in sorted_job_counts_list}
-        spark.stop()
-
-        return job_count_dict
 
 
-def group_csv_to_dict(input_file):
-    sess = SparkSession.builder.appName("job counter").getOrCreate()
-    reader = sess.read.csv(input_file, header=True, inferSchema=True)
-    counter = reader.groupBy("job").count()
-    sorted_counter = counter.orderBy(col("count").desc(), col("job"))
-    sorted_list = sorted_counter.collect()
-    job_count_dict = {row["job"]: row["count"] for row in sorted_list}
-    sess.stop()
-
-    return job_count_dict
-    
+# Build Tower by the following given arguments:
+#     number of floors (integer and always greater than 0)
+#     block size (width, height) (integer pair and always greater than (0, 0))
 
 
-result_dict = group_csv_to_dict(data_path)
-for key, value in result_dict.items():
-    print(key, value)
+def tower_builder(n_floors : int, block_size : Tuple[int, int]) -> List[str]:
+    tower = []
+    stars = block_size[0]
+    for i in range(n_floors-1, -1, -1):
+        for j in range(block_size[1]):
+            tower.append(f'{(i*block_size[0]) * " "}{stars * "*"}{(i*block_size[0]) * " "}')
+        stars += block_size[0]*2
+    return tower
 
-#3
+print(*tower_builder(3, (2,3)), sep="\n")
 
-def solution(S):
-    ans = 1
-    split = ""
-    i = 0
-    for i in range(len(S)):
-        if S[i] not in split:
-            split += S[i]
-        elif i != len(S)-1 and S[i] == S[i+1]:
-            ans+=1
+# Write a function that will return the count of distinct case-insensitive alphabetic characters
+# and numeric digits that occur more than once in the input string. The input string can be assumed to 
+# contain only alphabets (both uppercase and lowercase) and numeric digits.
+
+
+def duplicate_count(text : str) -> int:
+    d_count = {}
+    for chr in text.lower():
+        if chr in d_count:  
+            if d_count[chr] == 0:
+                d_count[chr] += 1
         else:
-            split = ""
-            ans += 1
-    return ans
+            d_count[chr] = 0
+    return sum(d_count.values())
+
+
+# find list outlier
+
+def find_outlier(integers : List[int]) -> int:
+    # i = 0
+    # while i < len(integers):
+    #     if (integers[i] + integers[i+1]) % 2 != 0:
+    #         return integers[i] if (integers[0] + integers[2]) % 2 != 0 else integers[i+1]
+    #     i += 1
+
+    odds = [x for x in integers if x % 2 != 0]
+    even = [x for x in integers if x % 2 == 0]
+    return odds[0] if len(odds) < len(even) else even[0]
+
+
+
+# create phone number
+
+def create_phone_number(n : List[int]) -> str:
+    # return f'({"".join(map(str, n[:3]))}) {"".join(map(str, n[3:6]))}-{"".join(map(str, n[6:10]))}'
+    return "({}{}{}) {}{}{}-{}{}{}{}".format(*n)
+
+
+
+# array diff
+
+def array_diff(a : List[int], b : List[int]) -> List[int]:
+    for num in b:
+        a = [i for i in a if i != num]
+        # a = list(filter((num).__ne__, a))
+    return a
+    # return [num for num in a if num not in b]
+
+
+
+# return likes count
+
+def likes(names : List[str]) -> str:
+
+    match(names):
+        case []:
+            return "no one likes this"
+        case [a]:
+            return f"{a} likes this"
+        case [a, b]:
+            return f"{a} and {b} like this"
+        case [a, b, c]:
+            return f"{a}, {b} and {c} like this"
+        case [a, b, *rest]:
+            return f"{a}, {b} and {len(rest)} like this"
+
+
+# return digital root of a number
+
+def digital_root(n : int) -> int:
+    if len(str(n)) == 1:
+        return n
+    return digital_root(sum(int(l) for l in str(n)))
+
+
+
+# reverse > 5 letter words
+
+def spin_words(sentence : str) -> str:
+    words = sentence.split(" ")
+    words_new = []
+    for word in words:
+        if len(word) >= 5:
+            words_new.append(word[::-1])
+        else:
+            words_new.append(word)
+    return " ".join(words_new)
+
+# vovels count
+
+def get_count(sentence : str) -> int:
+    counter = 0
+    vovels = {"a", "e", "i", "o", "u"}
+    for letter in sentence:
+        if letter in vovels:
+            counter += 1
+    return counter
+
+# even or odd
+
+def even_or_odd(number: int) -> str:
+    if number % 2 == 0:
+        return "Even"
+    return "Odd"
+
+
 
 #height of binary tree
 

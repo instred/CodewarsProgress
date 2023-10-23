@@ -78,23 +78,25 @@ class Solution:
             myset[num] += 1
         return summ
     
-sol = Solution()
-print(sol.numIdenticalPairs([1,2,3,1,1,3]))
-
 
 class MyHashMap:
 
     def __init__(self):
-        self.hashmap = []
+        self.hashmap = [None] * 1001
 
     def put(self, key: int, value: int) -> None:
-        self.hashmap.append([key, value])
+        if self.hashmap[key] is not None:
+            self.hashmap[key] = value
+        else:
+            self.hashmap[key] = value
 
     def get(self, key: int) -> int:
-        pass
+        return self.hashmap[key] if self.hashmap[key] is not None else -1
+
 
     def remove(self, key: int) -> None:
-        pass
+        if self.hashmap[key] is not None:
+            self.hashmap[key] = None
 
     def show(self) -> List[int]:
         return self.hashmap
@@ -110,4 +112,12 @@ key, value = 1, 1
 obj = MyHashMap()
 obj.put(key,value)
 obj.put(key+1,value+1)
+print(obj.get(key))
+print(obj.get(3))
 print(obj.show())
+obj.put(2, 1)
+print(obj.show())
+obj.remove(2)
+print(obj.show())
+print(obj.get(2))
+

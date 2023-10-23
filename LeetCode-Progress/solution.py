@@ -71,12 +71,20 @@ class Solution:
 
 class Solution:
     def numIdenticalPairs(self, nums: List[int]) -> int:
-        summ = 0
-        for i in range(len(nums)):
-            for j in range(i+1,len(nums)):
-                if nums[i] == nums[j]:
-                    summ += 1
+        myset = [0] * 100
+        summ, c = 0, 1
+        for num in nums:
+            summ += myset[num]
+            myset[num] += 1
         return summ
     
 sol = Solution()
 print(sol.numIdenticalPairs([1,2,3,1,1,3]))
+
+# Design a HashMap without using any built-in hash table libraries.
+# Implement the MyHashMap class:
+# MyHashMap() initializes the object with an empty map.
+# void put(int key, int value) inserts a (key, value) pair into the HashMap. If the key already exists in the map, update the corresponding value.
+# int get(int key) returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key.
+# void remove(key) removes the key and its corresponding value if the map contains the mapping for the key.
+ 

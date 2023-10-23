@@ -1,3 +1,5 @@
+from typing import List
+
 #Given an integer n, return true if it is a power of four. Otherwise, return false.
 #An integer n is a power of four, if there exists an integer x such that n == 4x.
 
@@ -64,7 +66,17 @@ class Solution:
         return True if a_score > b_score else False
 
 
-colors = "AAABABB"
-sol = Solution()
-print(sol.winnerOfGame(colors))
+# Given an array of integers nums, return the number of good pairs.
+# A pair (i, j) is called good if nums[i] == nums[j] and i < j.
 
+class Solution:
+    def numIdenticalPairs(self, nums: List[int]) -> int:
+        summ = 0
+        for i in range(len(nums)):
+            for j in range(i+1,len(nums)):
+                if nums[i] == nums[j]:
+                    summ += 1
+        return summ
+    
+sol = Solution()
+print(sol.numIdenticalPairs([1,2,3,1,1,3]))

@@ -195,18 +195,76 @@ class Solution:
 # Return the number of ways to build the array arr under the mentioned conditions. As the answer may grow large, the answer must be computed modulo 109 + 7.
 
 
-def searching(n : List[int]) -> (int, int):
-    max_val = -1
-    max_idx = -1
-    search_cost = 0
-    for num, i in enumerate(n):
-        if max_val < num:
-            max_val = num
-            max_idx = i
-            search_cost += 1
-    return (max_val, search_cost)
+class Solution:
+    def binSearchRange(self, nums: List[int], target: int) -> List[int]:
+        l = 0
+        r = len(nums) -1
+        while l <= r:
+            half = l + (r-l) // 2
+            if nums[half] == target:
+                return half
+            elif nums[half] < target:
+                l = half + 1
+            else:
+                r = half - 1
+        return -1
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        idx = self.binSearchRange(nums, target)
+        print(idx)
+        l, r = None, None
+        if idx == -1:
+            return [-1, -1]
+        for i in range(idx + 1, len(nums)):
+            if nums[i] > target:
+                r = i-1
+                break
+        for i in range(idx -1, -1, -1):
+            if nums[i] < target:
+                l = i+1
+                break
+        if l is None:
+            l = 0
+        if r is None:
+            r = len(nums)-1
+        return [l, r]
+    
 
-n = 5
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def find_first(nums: List[int], target: int):
+            l = 0
+            r = len(nums) -1
+            while l <= r:
+                half = l + (r-l) // 2
+                if nums[half] == target:
+                    if half == 0 or nums[half - 1] != target:
+                        return half
+                    else:
+                        r = half - 1
+                elif nums[half] < target:
+                    l = half + 1
+                else:
+                    r = half - 1
+            return -1
+    
+        def find_last(nums: List[int], target: int):
+            l = 0
+            r = len(nums) -1
+            while l <= r:
+                half = l + (r-l) // 2
+                if nums[half] == target:
+                    if half == len(nums) - 1 or nums[half + 1] != target:
+                        return half
+                    else:
+                        l = half + 1
+                elif nums[half] < target:
+                    l = half + 1
+                else:
+                    r = half - 1
+            return -1
+        return [find_first(nums, target), find_last(nums, target)]
+    
+nums = [2,2]
 s = Solution()
-print(searching([2,1]))
+print(s.searchRange(nums,2))
 

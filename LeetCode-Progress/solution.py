@@ -272,33 +272,18 @@ class Solution:
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
         sum_cost = 0
+        dp = [None] * len(cost)
+        dp[len(cost) - 1] = cost[len(cost)-1]
+        dp[len(cost) - 2] = cost[len(cost)-2]
+        for i in range(len(cost) - 3, -1, -1):
+            dp[i] = cost[i] + min(dp[i+1], dp[i+2])
+
         
-        if len(cost) == 2:
-            return cost[0] if cost[0] < cost[1] else cost[1]
-        elif len(cost) == 3:
-            return cost[1] if cost[1] < cost[0]+cost[2] else cost[0]+cost[2]
-        else:
-            if cost[0] > cost[1]:
-                start = 1
-                sum_cost += cost[1]
-            else: 
-                start = 0
-                sum_cost += cost[0]
-        print(sum_cost)
-        while start < len(cost)-2:
-            if cost[start+1] >= cost[start+2]:
-                print("1krok")
-                sum_cost += cost[start+2]
-                start += 2
-            else:
-                sum_cost += cost[start+1]
-                start += 1
-            print(sum_cost)
-        return sum_cost
+        return min(dp[0], dp[1])
             
 
 
-cost = [1,100,1,1,1,100,1,1,100,1]
+cost = [0,1,2,2]
 s = Solution()
 print(s.minCostClimbingStairs(cost))
 

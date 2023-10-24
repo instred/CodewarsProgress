@@ -79,6 +79,14 @@ class Solution:
         return summ
     
 
+# Design a HashMap without using any built-in hash table libraries.
+# Implement the MyHashMap class:
+# MyHashMap() initializes the object with an empty map.
+# void put(int key, int value) inserts a (key, value) pair into the HashMap. If the key already exists in the map, update the corresponding value.
+# int get(int key) returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key.
+# void remove(key) removes the key and its corresponding value if the map contains the mapping for the key.
+
+
 class MyHashMap:
 
     def __init__(self):
@@ -101,23 +109,52 @@ class MyHashMap:
     def show(self) -> List[int]:
         return self.hashmap
 
-# Design a HashMap without using any built-in hash table libraries.
-# Implement the MyHashMap class:
-# MyHashMap() initializes the object with an empty map.
-# void put(int key, int value) inserts a (key, value) pair into the HashMap. If the key already exists in the map, update the corresponding value.
-# int get(int key) returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key.
-# void remove(key) removes the key and its corresponding value if the map contains the mapping for the key.
 
-key, value = 1, 1
-obj = MyHashMap()
-obj.put(key,value)
-obj.put(key+1,value+1)
-print(obj.get(key))
-print(obj.get(3))
-print(obj.show())
-obj.put(2, 1)
-print(obj.show())
-obj.remove(2)
-print(obj.show())
-print(obj.get(2))
+# Given the root of a binary tree, return an array of the largest value in each row of the tree (0-indexed).
 
+global values
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+
+
+class Solution:
+
+    def helper(self, res: List[int], root : TreeNode, height: int) -> None:
+        if not root:
+            return
+        
+        if height == len(res):
+            res.append(root.val)
+        else:
+            res[height] = max(root.val, res[height])
+
+        self.helper(res, root.left, height+1)
+        self.helper(res, root.right, height+1)
+
+
+    def largestValues(self, root: [TreeNode]) -> List[int]:
+        res = []
+        self.helper(res, root, 0)
+        return res
+
+
+                #       1
+                #      / \
+                #     3   2
+                #    / \   \ 
+                #   5   3   9
+
+new_tree = TreeNode(1)
+new_tree.left = TreeNode(3)
+new_tree.right = TreeNode(2)
+new_tree.left.left = TreeNode(5)
+new_tree.left.right = TreeNode(3)
+new_tree.right.right = TreeNode(9)
+s = Solution()
+print(s.largestValues(new_tree))

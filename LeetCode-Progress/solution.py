@@ -1,5 +1,4 @@
 from typing import List
-from math import floor
 
 #Given an integer n, return true if it is a power of four. Otherwise, return false.
 #An integer n is a power of four, if there exists an integer x such that n == 4x.
@@ -113,11 +112,15 @@ class MyHashMap:
 
 # Given the root of a binary tree, return an array of the largest value in each row of the tree (0-indexed).
 
+global values
+
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
         self.left = left
         self.right = right
+
+
 
 
 class Solution:
@@ -147,20 +150,11 @@ class Solution:
                 #    / \   \ 
                 #   5   3   9
 
-
-# Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
-
-class Solution:
-    def majorityElement(self, nums: List[int]) -> List[int]:
-        limit = floor(len(nums)/3)
-        numbers = {}
-        for num in nums:
-            if num in numbers:
-                numbers[num] += 1
-            else:
-                numbers[num] = 1
-        return numbers
-    
-n = [3,2,3]
+new_tree = TreeNode(1)
+new_tree.left = TreeNode(3)
+new_tree.right = TreeNode(2)
+new_tree.left.left = TreeNode(5)
+new_tree.left.right = TreeNode(3)
+new_tree.right.right = TreeNode(9)
 s = Solution()
-print(s.majorityElement(n))        
+print(s.largestValues(new_tree))

@@ -264,7 +264,41 @@ class Solution:
             return -1
         return [find_first(nums, target), find_last(nums, target)]
     
-nums = [2,2]
+# You are given an integer array cost where cost[i] is the cost of ith step on a staircase. Once you pay the cost, you can either climb one or two steps.
+# You can either start from the step with index 0, or the step with index 1.
+# Return the minimum cost to reach the top of the floor.
+
+
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        sum_cost = 0
+        
+        if len(cost) == 2:
+            return cost[0] if cost[0] < cost[1] else cost[1]
+        elif len(cost) == 3:
+            return cost[1] if cost[1] < cost[0]+cost[2] else cost[0]+cost[2]
+        else:
+            if cost[0] > cost[1]:
+                start = 1
+                sum_cost += cost[1]
+            else: 
+                start = 0
+                sum_cost += cost[0]
+        print(sum_cost)
+        while start < len(cost)-2:
+            if cost[start+1] >= cost[start+2]:
+                print("1krok")
+                sum_cost += cost[start+2]
+                start += 2
+            else:
+                sum_cost += cost[start+1]
+                start += 1
+            print(sum_cost)
+        return sum_cost
+            
+
+
+cost = [1,100,1,1,1,100,1,1,100,1]
 s = Solution()
-print(s.searchRange(nums,2))
+print(s.minCostClimbingStairs(cost))
 

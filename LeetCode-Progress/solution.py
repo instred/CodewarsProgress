@@ -1,5 +1,5 @@
 from typing import List
-from math import floor
+from math import floor, prod
 from collections import Counter
 
 #Given an integer n, return true if it is a power of four. Otherwise, return false.
@@ -171,6 +171,25 @@ class Solution:
     def majorityElements(self, nums: List[int]) -> List[int]:
         return [x for x, count in Counter(nums).items() if count > len(nums) // 3]
 
-n = [3,2,3]
+
+# Given an integer n, break it into the sum of k positive integers, where k >= 2, and maximize the product of those integers.
+# Return the maximum product you can get.
+
+class Solution:
+    def integerBreak(self, n: int) -> int:
+        if n == 2:
+            return 1
+        if n == 3:
+            return 2
+        res = 1
+        while n > 4:
+            n -= 3
+            res *= 3
+        return res * n
+
+
+
+n = 5
 s = Solution()
-print(s.majorityElements(n))
+print(s.integerBreak(n))
+

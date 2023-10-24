@@ -1,4 +1,6 @@
 from typing import List
+from math import floor
+from collections import Counter
 
 #Given an integer n, return true if it is a power of four. Otherwise, return false.
 #An integer n is a power of four, if there exists an integer x such that n == 4x.
@@ -150,11 +152,25 @@ class Solution:
                 #    / \   \ 
                 #   5   3   9
 
-new_tree = TreeNode(1)
-new_tree.left = TreeNode(3)
-new_tree.right = TreeNode(2)
-new_tree.left.left = TreeNode(5)
-new_tree.left.right = TreeNode(3)
-new_tree.right.right = TreeNode(9)
+
+# Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+
+class Solution:
+    def majorityElement(self, nums: List[int]) -> List[int]:
+        limit = floor(len(nums)/3)
+        numbers = {}
+        for num in nums:
+            if num in numbers and numbers[num] <= limit:
+                numbers[num] += 1
+            elif num not in numbers:
+                numbers[num] = 1
+        return [x for x in numbers if numbers[x] > limit]
+    
+
+class Solution:
+    def majorityElements(self, nums: List[int]) -> List[int]:
+        return [x for x, count in Counter(nums).items() if count > len(nums) // 3]
+
+n = [3,2,3]
 s = Solution()
-print(s.largestValues(new_tree))
+print(s.majorityElements(n))

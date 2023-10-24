@@ -1,5 +1,5 @@
 from typing import List
-from math import floor, prod
+from math import floor
 from collections import Counter
 
 #Given an integer n, return true if it is a power of four. Otherwise, return false.
@@ -188,8 +188,25 @@ class Solution:
         return res * n
 
 
+# You should build the array arr which has the following properties:
+# arr has exactly n integers.
+# 1 <= arr[i] <= m where (0 <= i < n).
+# After applying the mentioned algorithm to arr, the value search_cost is equal to k.
+# Return the number of ways to build the array arr under the mentioned conditions. As the answer may grow large, the answer must be computed modulo 109 + 7.
+
+
+def searching(n : List[int]) -> (int, int):
+    max_val = -1
+    max_idx = -1
+    search_cost = 0
+    for num, i in enumerate(n):
+        if max_val < num:
+            max_val = num
+            max_idx = i
+            search_cost += 1
+    return (max_val, search_cost)
 
 n = 5
 s = Solution()
-print(s.integerBreak(n))
+print(searching([2,1]))
 

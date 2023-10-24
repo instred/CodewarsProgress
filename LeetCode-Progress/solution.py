@@ -271,7 +271,6 @@ class Solution:
 
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
-        sum_cost = 0
         dp = [None] * len(cost)
         dp[len(cost) - 1] = cost[len(cost)-1]
         dp[len(cost) - 2] = cost[len(cost)-2]
@@ -280,10 +279,48 @@ class Solution:
 
         
         return min(dp[0], dp[1])
-            
+
+# Given an integer rowIndex, return the rowIndexth (0-indexed) row of the Pascal's triangle.
+# In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+
+# 1
+# 1 1
+# 1 2 1
+# 1 3 3 1
+# 1 4 6 4 1
+# 1 5 10 10 5 1
+# 1 6 15 20 15 6 1
+# 1 7 21 35 35 21 7 1
+# 1 8 28 56 70 56 28 8 1
+# 1 9 36 84 126 126 84 36 9 1
+
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        if rowIndex == 0:
+            return [1]
+        row_b, row = [1], [1]
+        for i in range(0,rowIndex):
+            for i, num in enumerate(row_b):
+                if i+1 != len(row_b):
+                    row.append(num+row_b[i+1])
+                else:
+                    row.append(num)
+            row_b = row
+            row = [1]
+        return row_b
+    
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        if rowIndex == 0:
+            return [1]
+        row = [1] * (rowIndex + 1)
+        for i in range(1, rowIndex):
+            row[i] = row[i-1] * (rowIndex - i + 1) // i
+        return row
 
 
-cost = [0,1,2,2]
+
+idx = 4
 s = Solution()
-print(s.minCostClimbingStairs(cost))
+print(s.getRow(idx))
 

@@ -319,8 +319,93 @@ class Solution:
         return row
 
 
+# We build a table of n rows (1-indexed). We start by writing 0 in the 1st row. Now in every subsequent row, we look at the previous row and replace each occurrence of 0 with 01, and each occurrence of 1 with 10.
+# For example, for n = 3, the 1st row is 0, the 2nd row is 01, and the 3rd row is 0110.
+# Given two integer n and k, return the kth (1-indexed) symbol in the nth row of a table of n rows.
 
-idx = 4
+
+# 0
+# 0 1
+# 0 1 1 0
+# 0 1 1 0 1 0 0 1
+# 0 1 1 0 1 0 0 1 1 0 0 1 0 1 1 0
+# 0 1 1 0 1 0 0 1 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 0 1 
+# 
+
+
+class Solution:
+    def kthGrammar(self, n: int, k: int) -> int:
+        is_same = True
+
+        #calc numbers in row
+        n = 2**(n-1)
+
+        while n != 1:
+            #cut in half to get number count in half
+             n //= 2
+
+            #if k > this number -> k is in the second half so we move it to the first with reversing flag
+             if k > n:
+                is_same = not is_same
+                k -= n
+
+        return 0 if is_same else 1
+
+
+# You have n binary tree nodes numbered from 0 to n - 1 where node i has two children leftChild[i] and rightChild[i], return true if and only if all the given nodes form exactly one valid binary tree.
+# If node i has no left child then leftChild[i] will equal -1, similarly for the right child.
+# Note that the nodes have no values and that we only use the node numbers in this problem.
+
+
+class Solution:
+
+    def printPreorder(self, root, left, right, visited):
+        
+        print(root)
+        if root != -1 and root in visited:
+            return False
+
+        if root != -1:
+            visited.append(root)
+            self.printPreorder(left[root], left, right, visited)
+            self.printPreorder(right[root], left, right, visited)
+        elif root == -1:
+            visited.append(-1)
+        return visited
+
+            
+    def validateBinaryTreeNodes(self, n: int, leftChild: List[int], rightChild: List[int]) -> bool:
+        root = None
+        visited = []
+        for i in range(n):
+            if i not in leftChild and i not in rightChild:
+                root = i
+                break
+        if root is None:
+            return False
+        visited = self.printPreorder(root,leftChild, rightChild, visited)
+        print(visited)
+        if len(visited)-1!= (len(leftChild) + len(rightChild)):
+            return False
+        return True
+
+
+
+# n = 4
+# leftChild = [1,0,3,-1]
+# rightChild =[-1,-1,-1,-1]
+
+# n =5
+# leftChild =[2,2,-1,1,3]
+# rightChild =[2,2,1,2,1]
+
+n =4
+leftChild =[1,-1,3,-1]
+rightChild =[2,-1,-1,-1]
+
+# n = 6
+# leftChild = [1,-1,-1,4,-1,-1]
+# rightChild = [2,-1,-1,5,-1,-1]
 s = Solution()
-print(s.getRow(idx))
+print(s.validateBinaryTreeNodes(n, leftChild, rightChild))
 

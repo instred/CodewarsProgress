@@ -1,6 +1,8 @@
 from typing import List
 from math import floor
 from collections import Counter
+import pandas as pd
+
 
 #Given an integer n, return true if it is a power of four. Otherwise, return false.
 #An integer n is a power of four, if there exists an integer x such that n == 4x.
@@ -441,9 +443,38 @@ class Solution:
                 stack.append(let)
         t = ''.join(stack)
         return s, t
+    
 
-s = "y#fo##f"
-t = "y#f#o##f"
+# The Leetcode file system keeps a log each time some user performs a change folder operation.
+# The operations are described below:
+#     "../" : Move to the parent folder of the current folder. (If you are already in the main folder, remain in the same folder).
+#     "./" : Remain in the same folder.
+#     "x/" : Move to the child folder named x (This folder is guaranteed to always exist).
+# You are given a list of strings logs where logs[i] is the operation performed by the user at the ith step.
+# The file system starts in the main folder, then the operations in logs are performed.
+# Return the minimum number of operations needed to go back to the main folder after the change folder operations.
+
+
+class Solution:
+    def minOperations(self, logs: List[str]) -> int:
+        stack = 0
+        for opp in logs:
+            if stack and opp == "../":
+                stack -= 1
+            elif opp == "./":
+                pass
+            elif opp != "../":
+                stack += 1
+        return stack
+
+# Write a solution to display the first 3 rows of this DataFrame.
+
+
+def selectFirstRows(employees: pd.DataFrame) -> pd.DataFrame:
+
+
+
+logs = ["./","../","./"]
 ss = Solution()
-print(ss.backspaceCompare(s, t))
+print(ss.minOperations(logs))
 

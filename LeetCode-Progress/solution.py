@@ -2,6 +2,7 @@ from typing import List
 from math import floor
 from collections import Counter
 import pandas as pd
+import numpy as np
 
 
 #Given an integer n, return true if it is a power of four. Otherwise, return false.
@@ -467,14 +468,22 @@ class Solution:
                 stack += 1
         return stack
 
+
 # Write a solution to display the first 3 rows of this DataFrame.
 
 
 def selectFirstRows(employees: pd.DataFrame) -> pd.DataFrame:
+    return employees.head(3)
 
 
-
-logs = ["./","../","./"]
-ss = Solution()
-print(ss.minOperations(logs))
+# +-------------+-----------+-----------------------+--------+
+# | employee_id | name      | department            | salary |
+# +-------------+-----------+-----------------------+--------+
+# | 3           | Bob       | Operations            | 48675  |
+# | 90          | Alice     | Sales                 | 11096  |
+# | 9           | Tatiana   | Engineering           | 33805  | 
+# | 60          | Annabelle | InformationTechnology | 37678  |
+# | 49          | Jonathan  | HumanResources        | 23793  |
+# | 43          | Khaled    | Administration        | 40454  |
+# +-------------+-----------+-----------------------+--------+
 

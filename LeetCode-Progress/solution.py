@@ -389,23 +389,61 @@ class Solution:
             return False
         return True
 
+# Given an array of unique integers, arr, where each integer arr[i] is strictly greater than 1.
+# We make a binary tree using these integers, and each number may be used for any number of times. Each non-leaf node's value should be equal to the product of the values of its children.
+# Return the number of binary trees we can make. The answer may be too large so return the answer modulo 109 + 7.
+
+class Solution:
+    def numFactoredBinaryTrees(self, arr: List[int]) -> int:
+        pass
 
 
-# n = 4
-# leftChild = [1,0,3,-1]
-# rightChild =[-1,-1,-1,-1]
 
-# n =5
-# leftChild =[2,2,-1,1,3]
-# rightChild =[2,2,1,2,1]
+# Given two strings s and t, return true if they are equal when both are typed into empty text editors. '#' means a backspace character.
+# Note that after backspacing an empty text, the text will continue empty.
 
-n =4
-leftChild =[1,-1,3,-1]
-rightChild =[2,-1,-1,-1]
+ 
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        while True:
+            pos = s.find('#')
+            pos2 = t.find('#')
+            if pos == -1 and pos2 == -1:
+                break
+            if pos != -1:
+                if pos == 0:
+                    s = s[1:]
+                else:
+                    s = s[:pos-1] + s[pos+1:] 
+            if pos2 != -1:
+                if pos2 == 0:
+                    t = t[1:]
+                else:
+                    t = t[:pos2-1] + t[pos2+1:] 
+        return s == t
 
-# n = 6
-# leftChild = [1,-1,-1,4,-1,-1]
-# rightChild = [2,-1,-1,5,-1,-1]
-s = Solution()
-print(s.validateBinaryTreeNodes(n, leftChild, rightChild))
+# stack solution
+
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        stack = []
+        for let in s:
+            if let == '#' and stack:
+                stack.pop()
+            elif let != '#':
+                stack.append(let)
+        s = ''.join(stack)
+        stack = []
+        for let in t:
+            if let == '#' and stack:
+                stack.pop()
+            elif let != '#':
+                stack.append(let)
+        t = ''.join(stack)
+        return s, t
+
+s = "y#fo##f"
+t = "y#f#o##f"
+ss = Solution()
+print(ss.backspaceCompare(s, t))
 

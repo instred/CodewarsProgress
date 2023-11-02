@@ -487,3 +487,24 @@ def selectFirstRows(employees: pd.DataFrame) -> pd.DataFrame:
 # | 43          | Khaled    | Administration        | 40454  |
 # +-------------+-----------+-----------------------+--------+
 
+
+# DataFrame employees
+# +-------------+--------+
+# | Column Name | Type   |
+# +-------------+--------+
+# | name        | object |
+# | salary      | int    |
+# +-------------+--------+
+
+# A company intends to give its employees a pay rise.
+# Write a solution to modify the salary column by multiplying each salary by 2.
+
+def modifySalaryColumn(employees: pd.DataFrame) -> pd.DataFrame:
+    employees['salary'] = employees['salary'].apply(lambda x: x*2)
+    # employees['salary'] *= 2
+    # employees['salary'] = employees['salary'].transform(lambda x: x*2)
+    return employees
+
+
+employees = pd.DataFrame({'name': ['Jack', 'Pyper', 'Mia', 'Ulysses'], 'salary': [19666, 74754, 62509, 54866]})
+print(modifySalaryColumn(employees))

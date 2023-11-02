@@ -506,5 +506,37 @@ def modifySalaryColumn(employees: pd.DataFrame) -> pd.DataFrame:
     return employees
 
 
-employees = pd.DataFrame({'name': ['Jack', 'Pyper', 'Mia', 'Ulysses'], 'salary': [19666, 74754, 62509, 54866]})
-print(modifySalaryColumn(employees))
+
+
+# You are given an integer array arr. Sort the integers in the array in ascending order by the number of 1's in their binary representation 
+# and in case of two or more integers have the same number of 1's you have to sort them in ascending order.
+# Return the array after sorting it.
+
+
+class Solution:
+    def checkones(self, n: int) -> int:
+        count = 0
+        while n > 0:
+            count = count + 1
+            n = n & (n-1)
+        return count
+
+
+    def sortByBits(self, arr: List[int]) -> List[int]:
+        arr.sort(key=lambda x: (self.checkones(x), x))
+        return arr
+            
+# "little" shorter xdd
+
+class Solution:
+    def sortByBits(self, arr: List[int]) -> List[int]:
+        return sorted(arr, key=lambda x: (bin(x).count('1'), x))
+
+
+
+
+soll = Solution()
+arr = [0,1,2,3,4,5,6,7,8]
+arr2 = [1024,512,256,128,64,32,16,8,4,2,1]
+arr3 = [1000, 1000]
+print(soll.sortByBits(arr))

@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Optional, Dict
 from math import floor
-from collections import Counter
+from collections import Counter, defaultdict, deque
 import pandas as pd
 import numpy as np
 
@@ -534,9 +534,122 @@ class Solution:
 
 
 
+# Given the root of a binary search tree (BST) with duplicates, return all the mode(s) (i.e., the most frequently occurred element) in it.
+# If the tree has more than one mode, return them in any order.
 
-soll = Solution()
-arr = [0,1,2,3,4,5,6,7,8]
-arr2 = [1024,512,256,128,64,32,16,8,4,2,1]
-arr3 = [1000, 1000]
-print(soll.sortByBits(arr))
+# DFS recursively
+
+class Solution:
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        values = defaultdict(int)
+        def treeSearch(root: TreeNode, values) -> Dict:
+            if not root:
+                return None
+            values[root.val] += 1
+            treeSearch(root.left, values)
+            treeSearch(root.right, values)
+        
+        values = defaultdict(int)
+        treeSearch(root, values)
+        max_val = max(values.values())
+        res = [x for x in values if values[x] == max_val]
+        return res
+
+
+
+# DFS using stack and no recursion
+class Solution:
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        
+        values = defaultdict(int)
+        stack = [root]
+        while stack:
+            node = stack.pop()
+            values[node.val] += 1
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+                
+        max_val = max(values.values())
+        res = [x for x in values if values[x] == max_val]
+        return res
+    
+# BFS 
+class Solution:
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        values = defaultdict(int)
+        queue = deque([root])
+        
+        while queue:
+            node = queue.popleft()
+            values[node.val] += 1
+            
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        max_val = max(values.values())
+        res = [x for x in values if values[x] == max_val]
+        return res
+
+# alternative without hashmap
+class Solution:
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        def treeSearch(root: TreeNode, values) -> Dict:
+            if not root:
+                return None
+            
+            treeSearch(root.left, values)
+            values.append(root.val)
+            treeSearch(root.right, values)
+        
+        values = []
+        treeSearch(root, values)
+        maxStreak, currSteak, currNum = 0,0,0
+        ans = []
+        for num in values:
+            if num == currNum: currSteak += 1
+            else: currSteak = 1; currNum = num
+            if currSteak > maxStreak: maxStreak = currSteak; ans = []
+            if currSteak == maxStreak: ans.append(num)
+        return ans
+
+# alternative2 without hashmap and values list
+class Solution:
+    def findMode(self, root: Optional[TreeNode]) -> List[int]:
+        def treeSearch(root: TreeNode) -> Dict:
+            nonlocal maxStreak, currSteak, currNum, ans
+
+            if not root:
+                return None
+            
+            treeSearch(root.left)
+
+            num = root.val
+            if num == currNum: currSteak += 1
+            else: currSteak = 1; currNum = num
+            if currSteak > maxStreak: maxStreak = currSteak; ans = []
+            if currSteak == maxStreak: ans.append(num)
+
+            treeSearch(root.right)
+        
+        maxStreak, currSteak, currNum = 0,0,0
+        ans= []
+        treeSearch(root)
+        return ans
+    
+
+
+newTree = TreeNode(4)
+newTree.left = TreeNode(2)
+newTree.right = TreeNode(6)
+newTree.left.left = TreeNode(2)
+newTree.left.right = TreeNode(3)
+newTree.right.left = TreeNode(6)
+newTree.right.right = TreeNode(7)
+
+
+sol = Solution()
+print(sol.findMode(newTree))

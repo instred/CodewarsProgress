@@ -92,7 +92,26 @@ class Solution:
         return ans
 
 
+# For two strings s and t, we say "t divides s" if and only if s = t + ... + t (i.e., t is concatenated with itself one or more times).
+# Given two strings str1 and str2, return the largest string x such that x divides both str1 and str2.
+
+
+class Solution:
+    def gcdOfStrings(self, str1: str, str2: str) -> str:
+        
+        if len(str1) < len(str2):
+            return self.gcdOfStrings(str2, str1)
+
+        elif not str1.startswith(str2):
+            return ""
+        elif len(str2) == 0:
+            return str1
+        
+        else: 
+            return self.gcdOfStrings(str1[len(str2):], str2)
+    
+
 sol = Solution()
-word1 = "abc"
-word2 = "pqrs"
-print(sol.mergeAlternately(word1, word2))
+str1 = "ABCABC"
+str2 = "ABC"
+print(sol.gcdOfStrings(str1, str2))

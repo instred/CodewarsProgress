@@ -41,9 +41,38 @@ class Solution:
             i += 1
 
         return ans
+    
+# You are given an array nums of positive integers and an integer k.
+# In one operation, you can remove the last element of the array and add it to your collection.
+# Return the minimum number of operations needed to collect elements 1, 2, ..., k.
 
+# 72/39%
+class Solution:
+    def minOperations(self, nums: List[int], k: int) -> int:
+        ans = 0
+        stack = []
+        while len(stack) != k:
+            p = nums.pop()
+            if p <= k and p not in stack:
+                stack.append(p)
+            ans += 1
+        return ans
+
+
+# 50/72%
+class Solution:
+    def minOperations(self, nums: List[int], k: int) -> int:
+        ans = 0
+        occ = [0] * k
+        while 0 in occ:
+            p = nums.pop()
+            if p <= k:
+                occ[p-1] = 1
+            ans += 1
+        return ans
+    
 
 sol = Solution()
-a = [2,3,5]
-n = 5
-print(sol.buildArray(a, n))
+nums = [3,1,5,4,2]
+k = 2
+print(sol.minOperations(nums, k))

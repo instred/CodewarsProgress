@@ -71,8 +71,28 @@ class Solution:
             ans += 1
         return ans
     
+# You are given two strings word1 and word2. Merge the strings by adding letters in alternating order, starting with word1. 
+# If a string is longer than the other, append the additional letters onto the end of the merged string.
+# Return the merged string.
+
+
+class Solution:
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        ans = ""
+        i, j = 0, 0
+        l1 = len(word1)
+        l2 = len(word2)
+        while len(ans) != (l1+l2):
+            if i < l1:
+                ans += word1[i]
+                i += 1
+            if j < l2:
+                ans += word2[j]
+                j += 1
+        return ans
+
 
 sol = Solution()
-nums = [3,1,5,4,2]
-k = 2
-print(sol.minOperations(nums, k))
+word1 = "abc"
+word2 = "pqrs"
+print(sol.mergeAlternately(word1, word2))
